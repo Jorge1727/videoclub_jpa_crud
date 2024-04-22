@@ -10,6 +10,7 @@ import {CategoriaService} from "../categoria.service";
 export class IndexComponent implements OnInit {
 
   categorias: Categoria[] = [];
+  selectedCategoryId: number;
 
   constructor(public categoriaService:CategoriaService) { }
 
@@ -20,11 +21,25 @@ export class IndexComponent implements OnInit {
     })
   }
 
+  openDeleteModal(id: number) {
+    this.selectedCategoryId = id; // Almacenar el id de la categoría seleccionada
+  }
+
   deleteCategoria(id: any){
     this.categoriaService.delete(id).subscribe(res => {
       this.categorias = this.categorias.filter(cat => cat.id !== id);
       console.log('Categoria id =' + id + ' eliminada satisfactoriamente!');
     })
+
+    const modal = document.getElementById('exampleModal');
+    if (modal) {
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+      const backdrop = document.getElementsByClassName('modal-backdrop')[0];
+      if (backdrop) {
+        backdrop.remove();
+      }
+    }
   }
 
 
